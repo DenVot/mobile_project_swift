@@ -1,0 +1,46 @@
+{
+  "" : {
+    "const-values" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/mobileProjectSwift-primary.swiftconstvalues",
+    "dependencies" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/mobileProjectSwift-primary.d",
+    "diagnostics" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/mobileProjectSwift-primary.dia",
+    "emit-module-dependencies" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/mobileProjectSwift-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/mobileProjectSwift-primary-emit-module.dia",
+    "pch" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/mobileProjectSwift-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/mobileProjectSwift-primary.swiftdeps"
+  },
+  "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  },
+  "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/mobileProjectSwift/ContentView.swift" : {
+    "index-unit-output-path" : "/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/ContentView.o"
+  },
+  "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/mobileProjectSwift/Models/User.swift" : {
+    "index-unit-output-path" : "/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/User.o",
+    "llvm-bc" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/User.bc",
+    "object" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/User.o"
+  },
+  "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/mobileProjectSwift/Views/Auth/LoginView.swift" : {
+    "index-unit-output-path" : "/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/LoginView.o",
+    "llvm-bc" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/LoginView.bc",
+    "object" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/LoginView.o"
+  },
+  "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/mobileProjectSwift/Views/Auth/RegisterView.swift" : {
+    "index-unit-output-path" : "/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/RegisterView.o",
+    "llvm-bc" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/RegisterView.bc",
+    "object" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/RegisterView.o"
+  },
+  "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/mobileProjectSwift/Views/ViewModels/AuthViewModel.swift" : {
+    "index-unit-output-path" : "/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/AuthViewModel.o",
+    "llvm-bc" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/AuthViewModel.bc",
+    "object" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/AuthViewModel.o"
+  },
+  "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/mobileProjectSwift/mobileProjectSwiftApp.swift" : {
+    "index-unit-output-path" : "/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/mobileProjectSwiftApp.o",
+    "llvm-bc" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/mobileProjectSwiftApp.bc",
+    "object" : "/Users/denisvojtenko/Documents/swift_prod/mobile_project_swift/mobile_project_swift/mobileProjectSwift/build/mobileProjectSwift.build/Release-iphoneos/mobileProjectSwift.build/Objects-normal/arm64/mobileProjectSwiftApp.o"
+  }
+}

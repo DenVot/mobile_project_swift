@@ -3,41 +3,53 @@ import SwiftUI
 struct LoginView: View {
     @State private var login: String = ""
     @State private var password: String = ""
+    @Binding var navigationPath: NavigationPath
     
-    @StateObject private var authVM = AuthViewModel()
+    @EnvironmentObject private var authService: AuthService
     
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 20) {
-                Text("Вход")
-                    .font(.largeTitle)
-                    .bold()
-                
-                TextField("Логин", text: $login)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.horizontal)
-                
-                SecureField("Пароль", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.horizontal)
-                
-                Button("Войти") {
-                    authVM.login(username: login, password: password)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
+        VStack(spacing: 20) {
+            Text("Вход")
+                .font(.largeTitle)
+                .bold()
+            
+            TextField("Логин", text: $login)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.horizontal)
-                
-                NavigationLink("Регистрация", destination: RegisterView(authVM: authVM))
-                    .padding(.top, 10)
-                
-                NavigationLink(destination: /*НЕ ЗАБЫТЬ СЮДА ВСТАВИТЬ МЭИН ВЬЮ!!!!*/, isActive: $authVM.isAuthenticated) {
-                    EmptyView()
-                }
+            
+            SecureField("Пароль", text: $password)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(.horizontal)
+            
+            Button {
+                authService.login(username: login, password: password)
+            } label: {
+                Text("Войти")
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            }
+            .padding(.horizontal)
+            
+            Button("Регистрация") {
+                navigationPath.append(NavigationDestination.register)
+            }
+            .foregroundColor(.blue)
+            .padding(.top, 10)
+        }
+        .onChange(of: authService.isAuthenticated) { oldValue, newValue in
+            if newValue {
+                navigationPath.append(NavigationDestination.main)
             }
         }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        LoginView(navigationPath: .constant(NavigationPath()))
+            .environmentObject(AuthService())
     }
 }

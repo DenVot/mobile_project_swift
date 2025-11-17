@@ -4,8 +4,9 @@ struct RegisterView: View {
     @State private var login: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
+    @Binding var navigationPath: NavigationPath
     
-    @ObservedObject var authVM: AuthViewModel
+    @EnvironmentObject private var authService: AuthService
     
     var body: some View {
         VStack(spacing: 20) {
@@ -25,19 +26,29 @@ struct RegisterView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.horizontal)
             
-            Button("Войти") {
-                authVM.register(username: login, password: password, confirmPassword: confirmPassword)
+            Button {
+                authService.register(username: login, password: password, confirmPassword: confirmPassword)
+            } label: {
+                Text("Зарегистрироваться")
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(10)
             .padding(.horizontal)
-            
-            NavigationLink(destination: /*НЕ ЗАБЫТЬ СЮДА ВСТАВИТЬ МЭИН ВЬЮ!!!!*/, isActive: $authVM.isAuthenticated) {
-                EmptyView()
+        }
+        .onChange(of: authService.isAuthenticated) { oldValue, newValue in
+            if newValue {
+                navigationPath.append(NavigationDestination.main)
             }
         }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        RegisterView(navigationPath: .constant(NavigationPath()))
+            .environmentObject(AuthService())
     }
 }
