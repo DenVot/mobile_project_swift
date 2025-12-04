@@ -39,11 +39,6 @@ struct LoginView: View {
             .foregroundColor(.blue)
             .padding(.top, 10)
         }
-        .onChange(of: authService.isAuthenticated) { oldValue, newValue in
-            if newValue {
-                navigationPath.append(NavigationDestination.main)
-            }
-        }
     }
 }
 

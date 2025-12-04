@@ -38,11 +38,6 @@ struct RegisterView: View {
             }
             .padding(.horizontal)
         }
-        .onChange(of: authService.isAuthenticated) { oldValue, newValue in
-            if newValue {
-                navigationPath.append(NavigationDestination.main)
-            }
-        }
     }
 }
 

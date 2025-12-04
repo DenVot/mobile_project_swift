@@ -6,19 +6,24 @@ enum NavigationDestination: Hashable {
 }
 
 struct ContentView: View {
+    @EnvironmentObject private var authService: AuthService
     @State private var navigationPath = NavigationPath()
     
     var body: some View {
-        NavigationStack(path: $navigationPath) {
-            LoginView(navigationPath: $navigationPath)
-                .navigationDestination(for: NavigationDestination.self) { destination in
-                    switch destination {
-                    case .register:
-                        RegisterView(navigationPath: $navigationPath)
-                    case .main:
-                        MainView()
+        if authService.isAuthenticated {
+            MainView()
+        } else {
+            NavigationStack(path: $navigationPath) {
+                LoginView(navigationPath: $navigationPath)
+                    .navigationDestination(for: NavigationDestination.self) { destination in
+                        switch destination {
+                        case .register:
+                            RegisterView(navigationPath: $navigationPath)
+                        case .main:
+                            EmptyView()
+                        }
                     }
-                }
+            }
         }
     }
 }
