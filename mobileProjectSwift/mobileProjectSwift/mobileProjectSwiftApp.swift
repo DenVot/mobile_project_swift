@@ -1,17 +1,13 @@
-//
-//  mobileProjectSwiftApp.swift
-//  mobileProjectSwift
-//
-//  Created by Денис Войтенко on 16.09.2025.
-//
-
 import SwiftUI
 
 @main
 struct mobileProjectSwiftApp: App {
+    @StateObject private var authService = AuthService()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(authService)
         }
     }
 }
