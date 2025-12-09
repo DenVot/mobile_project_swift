@@ -1,16 +1,13 @@
 import SwiftUI
 
 struct LoginViewWrapper: UIViewControllerRepresentable {
-    @EnvironmentObject var authService: AuthService
+    @ObservedObject var authViewModel: AuthViewModel
     
     func makeUIViewController(context: Context) -> LoginViewController {
-        let loginVC = LoginViewController()
-        loginVC.authService = authService
-        return loginVC
+        return LoginViewController(authViewModel: authViewModel)
     }
     
     func updateUIViewController(_ uiViewController: LoginViewController, context: Context) {
-        uiViewController.authService = authService
     }
 }
 

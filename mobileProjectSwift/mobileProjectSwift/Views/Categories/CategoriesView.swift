@@ -1,13 +1,13 @@
 import SwiftUI
 
 struct CategoriesView: View {
-    @ObservedObject var expenseService: ExpenseService
+    @ObservedObject var expenseViewModel: ExpenseViewModel
     @State private var showAddCategory = false
     
     var body: some View {
         ZStack {
             List {
-                ForEach(expenseService.categories) { category in
+                ForEach(expenseViewModel.categories) { category in
                     HStack {
                         Circle()
                             .fill(category.color.swiftUIColor)
@@ -19,7 +19,7 @@ struct CategoriesView: View {
                         Spacer()
                         
                         Button {
-                            expenseService.deleteCategory(category)
+                            expenseViewModel.deleteCategory(category)
                         } label: {
                             Image(systemName: "minus.circle")
                                 .foregroundColor(.red)
@@ -48,17 +48,17 @@ struct CategoriesView: View {
                 }
             }
         }
-        .navigationTitle("Категории")
-        .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showAddCategory) {
-            AddCategoryView(expenseService: expenseService)
+            AddCategoryView(expenseViewModel: expenseViewModel)
         }
     }
 }
 
 #Preview {
-    NavigationStack {
-        CategoriesView(expenseService: ExpenseService())
+    let expenseService = ExpenseService()
+    let expenseViewModel = ExpenseViewModel(expenseService: expenseService)
+    return NavigationStack {
+        CategoriesView(expenseViewModel: expenseViewModel)
     }
 }
 

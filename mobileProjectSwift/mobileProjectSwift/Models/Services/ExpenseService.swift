@@ -1,8 +1,8 @@
 import Foundation
 
-class ExpenseService: ObservableObject {
-    @Published var categories: [Category] = []
-    @Published var transactions: [Transaction] = []
+class ExpenseService: ExpenseServiceProtocol {
+    private(set) var categories: [Category] = []
+    private(set) var transactions: [Transaction] = []
     
     init() {
         let sneakersCategory = Category(name: "Кроссовки", color: .green)

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AddCategoryView: View {
-    @ObservedObject var expenseService: ExpenseService
+    @ObservedObject var expenseViewModel: ExpenseViewModel
     @Environment(\.dismiss) private var dismiss
     
     @State private var name: String = ""
@@ -72,8 +72,6 @@ struct AddCategoryView: View {
                 .padding(.horizontal)
                 .padding(.bottom)
             }
-            .navigationTitle("Новая категория")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
@@ -86,12 +84,14 @@ struct AddCategoryView: View {
             color: selectedColor
         )
         
-        expenseService.addCategory(category)
+        expenseViewModel.addCategory(category)
         dismiss()
     }
 }
 
 #Preview {
-    AddCategoryView(expenseService: ExpenseService())
+    let expenseService = ExpenseService()
+    let expenseViewModel = ExpenseViewModel(expenseService: expenseService)
+    return AddCategoryView(expenseViewModel: expenseViewModel)
 }
 

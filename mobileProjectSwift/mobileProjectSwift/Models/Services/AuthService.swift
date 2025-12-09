@@ -1,8 +1,8 @@
 import Foundation
 
-class AuthService: ObservableObject {
-    @Published var isAuthenticated = false
-    @Published var currentUser: User? = nil
+class AuthService: AuthServiceProtocol {
+    private(set) var isAuthenticated = false
+    private(set) var currentUser: User? = nil
     
     func login(username: String, password: String) {
         let user = User(id: UUID(), name: username)

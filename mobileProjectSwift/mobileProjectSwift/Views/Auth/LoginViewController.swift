@@ -8,8 +8,17 @@ class LoginViewController: UIViewController {
     private var registerButton: UIButton!
     private var titleLabel: UILabel!
     
-    var authService: AuthService!
+    private let authViewModel: AuthViewModel
     private var cancellables = Set<AnyCancellable>()
+    
+    init(authViewModel: AuthViewModel) {
+        self.authViewModel = authViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,12 +108,11 @@ class LoginViewController: UIViewController {
             return
         }
         
-        authService.login(username: login, password: password)
+        authViewModel.login(username: login, password: password)
     }
     
     @objc private func registerButtonTapped() {
-        let registerVC = RegisterViewController()
-        registerVC.authService = authService
+        let registerVC = RegisterViewController(authViewModel: authViewModel)
         navigationController?.pushViewController(registerVC, animated: true)
     }
 }

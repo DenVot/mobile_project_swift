@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AddPurchaseView: View {
-    @ObservedObject var expenseService: ExpenseService
+    @ObservedObject var expenseViewModel: ExpenseViewModel
     @Binding var selectedMonth: Date
     @Environment(\.dismiss) private var dismiss
     
@@ -11,7 +11,7 @@ struct AddPurchaseView: View {
     
     private var selectedCategory: Category? {
         if let id = selectedCategoryId {
-            return expenseService.categories.first { $0.id == id }
+            return expenseViewModel.categories.first { $0.id == id }
         }
         return nil
     }
@@ -47,7 +47,7 @@ struct AddPurchaseView: View {
                     Text("Категория")
                         .font(.headline)
                     
-                    if expenseService.categories.isEmpty {
+                    if expenseViewModel.categories.isEmpty {
                         Text("Нет доступных категорий")
                             .foregroundColor(.gray)
                             .padding()
@@ -57,7 +57,7 @@ struct AddPurchaseView: View {
                     } else {
                         Picker("Категория", selection: $selectedCategoryId) {
                             Text("Выберите категорию").tag(nil as UUID?)
-                            ForEach(expenseService.categories) { category in
+                            ForEach(expenseViewModel.categories) { category in
                                 HStack {
                                     Circle()
                                         .fill(category.color.swiftUIColor)
@@ -93,8 +93,6 @@ struct AddPurchaseView: View {
                 .padding(.horizontal)
                 .padding(.bottom)
             }
-            .navigationTitle("Новая покупка")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
@@ -121,14 +119,16 @@ struct AddPurchaseView: View {
             date: transactionDate
         )
         
-        expenseService.addTransaction(transaction)
+        expenseViewModel.addTransaction(transaction)
         dismiss()
     }
 }
 
 #Preview {
-    AddPurchaseView(
-        expenseService: ExpenseService(),
+    let expenseService = ExpenseService()
+    let expenseViewModel = ExpenseViewModel(expenseService: expenseService)
+    return AddPurchaseView(
+        expenseViewModel: expenseViewModel,
         selectedMonth: .constant(Date())
     )
 }

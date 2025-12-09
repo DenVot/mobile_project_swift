@@ -1,16 +1,13 @@
 import SwiftUI
 
 struct RegisterViewWrapper: UIViewControllerRepresentable {
-    @EnvironmentObject var authService: AuthService
+    @ObservedObject var authViewModel: AuthViewModel
     
     func makeUIViewController(context: Context) -> RegisterViewController {
-        let registerVC = RegisterViewController()
-        registerVC.authService = authService
-        return registerVC
+        return RegisterViewController(authViewModel: authViewModel)
     }
     
     func updateUIViewController(_ uiViewController: RegisterViewController, context: Context) {
-        uiViewController.authService = authService
     }
 }
 

@@ -1,18 +1,18 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @EnvironmentObject private var authService: AuthService
+    @ObservedObject var authViewModel: AuthViewModel
     
     var body: some View {
         VStack(spacing: 20) {
-            if let user = authService.currentUser {
+            if let user = authViewModel.currentUser {
                 Text(user.name)
                     .font(.title)
                     .bold()
             }
             
             Button {
-                authService.logout()
+                authViewModel.logout()
             } label: {
                 Text("Выйти")
                     .foregroundColor(.white)
@@ -23,15 +23,14 @@ struct ProfileView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .navigationTitle(authService.currentUser?.name ?? "Профиль")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
-    NavigationStack {
-        ProfileView()
-            .environmentObject(AuthService())
+    let authService = AuthService()
+    let authViewModel = AuthViewModel(authService: authService)
+    return NavigationStack {
+        ProfileView(authViewModel: authViewModel)
     }
 }
 

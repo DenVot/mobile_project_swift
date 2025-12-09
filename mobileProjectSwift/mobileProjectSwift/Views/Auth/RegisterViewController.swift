@@ -8,8 +8,17 @@ class RegisterViewController: UIViewController {
     private var confirmPasswordTextField: UITextField!
     private var registerButton: UIButton!
     
-    var authService: AuthService!
+    private let authViewModel: AuthViewModel
     private var cancellables = Set<AnyCancellable>()
+    
+    init(authViewModel: AuthViewModel) {
+        self.authViewModel = authViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError();
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,7 +128,7 @@ class RegisterViewController: UIViewController {
             return
         }
         
-        authService.register(username: login, password: password, confirmPassword: confirmPassword)
+        authViewModel.register(username: login, password: password, confirmPassword: confirmPassword)
     }
 }
 

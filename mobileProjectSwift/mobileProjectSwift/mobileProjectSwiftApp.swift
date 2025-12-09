@@ -2,12 +2,12 @@ import SwiftUI
 
 @main
 struct mobileProjectSwiftApp: App {
-    @StateObject private var authService = AuthService()
+    private let authService: AuthServiceProtocol = AuthService()
+    private let expenseService: ExpenseServiceProtocol = ExpenseService()
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(authService)
+            ContentView(authService: authService, expenseService: expenseService)
         }
     }
 }

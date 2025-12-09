@@ -6,14 +6,14 @@ enum MainTab: CaseIterable {
     case profile
     case categories
     
-    func title(authService: AuthService) -> String {
+    func title(authViewModel: AuthViewModel) -> String {
         switch self {
         case .monthly:
             return "Месяц"
         case .yearly:
             return "Аналитика за год"
         case .profile:
-            return authService.currentUser?.name ?? "Профиль"
+            return authViewModel.currentUser?.name ?? "Профиль"
         case .categories:
             return "Категории"
         }
@@ -21,11 +21,12 @@ enum MainTab: CaseIterable {
 }
 
 struct MainView: View {
-    @EnvironmentObject private var authService: AuthService
-    @StateObject private var expenseService = ExpenseService()
-    @State private var selectedTab: MainTab = .monthly
-    @State private var selectedMonth = Date()
+    @StateObject private var viewModel: MainViewModel
     @State private var navigationPath = NavigationPath()
+    
+    init(authViewModel: AuthViewModel, expenseViewModel: ExpenseViewModel) {
+        _viewModel = StateObject(wrappedValue: MainViewModel(authViewModel: authViewModel, expenseViewModel: expenseViewModel))
+    }
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -33,29 +34,29 @@ struct MainView: View {
                 HStack(spacing: 0) {
                     ForEach(MainTab.allCases, id: \.self) { tab in
                         Button {
-                            selectedTab = tab
+                            viewModel.selectTab(tab)
                         } label: {
-                            Text(tab.title(authService: authService))
+                            Text(tab.title(authViewModel: viewModel.authViewModel))
                                 .font(.system(size: 16))
-                                .foregroundColor(selectedTab == tab ? .blue : .gray)
+                                .foregroundColor(viewModel.selectedTab == tab ? .blue : .gray)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
-                                .background(selectedTab == tab ? Color.blue.opacity(0.1) : Color.clear)
+                                .background(viewModel.selectedTab == tab ? Color.blue.opacity(0.1) : Color.clear)
                         }
                     }
                 }
                 .background(Color.gray.opacity(0.1))
                 
                 Group {
-                    switch selectedTab {
+                    switch viewModel.selectedTab {
                     case .monthly:
-                        AnalyticsView(selectedMonth: $selectedMonth, expenseService: expenseService)
+                        AnalyticsView(selectedMonth: $viewModel.selectedMonth, expenseViewModel: viewModel.expenseViewModel)
                     case .yearly:
-                        YearlyAnalyticsView(expenseService: expenseService)
+                        YearlyAnalyticsView(expenseViewModel: viewModel.expenseViewModel)
                     case .profile:
-                        ProfileView()
+                        ProfileView(authViewModel: viewModel.authViewModel)
                     case .categories:
-                        CategoriesView(expenseService: expenseService)
+                        CategoriesView(expenseViewModel: viewModel.expenseViewModel)
                     }
                 }
             }
@@ -64,6 +65,9 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
-        .environmentObject(AuthService())
+    let authService = AuthService()
+    let expenseService = ExpenseService()
+    let authViewModel = AuthViewModel(authService: authService)
+    let expenseViewModel = ExpenseViewModel(expenseService: expenseService)
+    return MainView(authViewModel: authViewModel, expenseViewModel: expenseViewModel)
 }

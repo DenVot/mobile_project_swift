@@ -2,10 +2,10 @@ import SwiftUI
 
 struct TransactionRow: View {
     let transaction: Transaction
-    @ObservedObject var expenseService: ExpenseService
+    @ObservedObject var expenseViewModel: ExpenseViewModel
     
     private var category: Category? {
-        expenseService.categories.first { $0.id == transaction.categoryId }
+        expenseViewModel.categories.first { $0.id == transaction.categoryId }
     }
     
     var body: some View {
@@ -36,10 +36,19 @@ struct TransactionRow: View {
 
 #Preview {
     let expenseService = ExpenseService()
-    return TransactionRow(
-        transaction: expenseService.transactions.first!,
-        expenseService: expenseService
-    )
-    .padding()
+    let expenseViewModel = ExpenseViewModel(expenseService: expenseService)
+    if let firstTransaction = expenseViewModel.transactions.first {
+        return TransactionRow(
+            transaction: firstTransaction,
+            expenseViewModel: expenseViewModel
+        )
+        .padding()
+    } else {
+        return TransactionRow(
+            transaction: Transaction(name: "Что-то пошло не так...", amount: 1000, categoryId: UUID()),
+            expenseViewModel: expenseViewModel
+        )
+        .padding()
+    }
 }
 

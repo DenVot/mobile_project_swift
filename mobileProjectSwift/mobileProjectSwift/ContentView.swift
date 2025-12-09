@@ -6,19 +6,25 @@ enum NavigationDestination: Hashable {
 }
 
 struct ContentView: View {
-    @EnvironmentObject private var authService: AuthService
+    @StateObject private var authViewModel: AuthViewModel
+    @StateObject private var expenseViewModel: ExpenseViewModel
     @State private var navigationPath = NavigationPath()
     
+    init(authService: AuthServiceProtocol, expenseService: ExpenseServiceProtocol) {
+        _authViewModel = StateObject(wrappedValue: AuthViewModel(authService: authService))
+        _expenseViewModel = StateObject(wrappedValue: ExpenseViewModel(expenseService: expenseService))
+    }
+    
     var body: some View {
-        if authService.isAuthenticated {
-            MainView()
+        if authViewModel.isAuthenticated {
+            MainView(authViewModel: authViewModel, expenseViewModel: expenseViewModel)
         } else {
             NavigationStack(path: $navigationPath) {
-                LoginViewWrapper()
+                LoginViewWrapper(authViewModel: authViewModel)
                     .navigationDestination(for: NavigationDestination.self) { destination in
                         switch destination {
                         case .register:
-                            RegisterViewWrapper()
+                            RegisterViewWrapper(authViewModel: authViewModel)
                         case .main:
                             EmptyView()
                         }
@@ -29,5 +35,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    let authService = AuthService()
+    let expenseService = ExpenseService()
+    return ContentView(authService: authService, expenseService: expenseService)
 }

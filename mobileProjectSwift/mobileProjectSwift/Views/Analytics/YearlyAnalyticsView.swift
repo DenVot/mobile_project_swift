@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct YearlyAnalyticsView: View {
-    @ObservedObject var expenseService: ExpenseService
+    @ObservedObject var expenseViewModel: ExpenseViewModel
     @State private var selectedCategory: Category? = nil
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
     
     private var yearlyData: [(month: Int, amount: Double)] {
-        expenseService.getYearlyData(
+        expenseViewModel.getYearlyData(
             for: selectedYear,
             categoryId: selectedCategory?.id
         )
@@ -35,7 +35,7 @@ struct YearlyAnalyticsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                Text("\(selectedYear)")
+                Text(String(selectedYear))
                     .font(.title)
                     .bold()
                     .padding(.top)
@@ -46,7 +46,7 @@ struct YearlyAnalyticsView: View {
                     
                     Picker("Категория", selection: $selectedCategory) {
                         Text("Все категории").tag(nil as Category?)
-                        ForEach(expenseService.categories) { category in
+                        ForEach(expenseViewModel.categories) { category in
                             HStack {
                                 Circle()
                                     .fill(category.color.swiftUIColor)
@@ -124,7 +124,7 @@ struct YearlyAnalyticsView: View {
                                 .font(.system(size: 60))
                                 .foregroundColor(.gray.opacity(0.5))
                             
-                            Text("Нет данных за \(selectedYear) год")
+                            Text("Нет данных за \(String(selectedYear)) год")
                                 .font(.title3)
                                 .foregroundColor(.gray)
                         }
@@ -135,13 +135,13 @@ struct YearlyAnalyticsView: View {
                 .padding(.horizontal)
             }
         }
-        .navigationTitle("Аналитика за год")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
-    NavigationStack {
-        YearlyAnalyticsView(expenseService: ExpenseService())
+    let expenseService = ExpenseService()
+    let expenseViewModel = ExpenseViewModel(expenseService: expenseService)
+    return NavigationStack {
+        YearlyAnalyticsView(expenseViewModel: expenseViewModel)
     }
 }

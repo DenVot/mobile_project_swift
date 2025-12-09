@@ -2,22 +2,25 @@ import SwiftUI
 
 struct AnalyticsView: View {
     @Binding var selectedMonth: Date
-    @ObservedObject var expenseService: ExpenseService
+    @ObservedObject var expenseViewModel: ExpenseViewModel
     @State private var showAddPurchase = false
     
-    private var monthFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ru_RU")
-        formatter.dateFormat = "MMMM"
-        return formatter
+    private var monthNameNominative: String {
+        let monthNames = [
+            "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+            "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+        ]
+        let calendar = Calendar.current
+        let monthIndex = calendar.component(.month, from: selectedMonth) - 1
+        return monthNames[monthIndex]
     }
     
     private var monthTransactions: [Transaction] {
-        expenseService.getTransactions(for: selectedMonth)
+        expenseViewModel.getTransactions(for: selectedMonth)
     }
     
     private var categoryExpenses: [(category: Category, amount: Double, percentage: Double)] {
-        expenseService.getCategoryExpenses(for: selectedMonth)
+        expenseViewModel.getCategoryExpenses(for: selectedMonth)
     }
     
     var body: some View {
@@ -26,7 +29,9 @@ struct AnalyticsView: View {
                 VStack(spacing: 20) {
                     HStack {
                         Button {
-                            selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? selectedMonth
+                            if let newDate = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) {
+                                selectedMonth = newDate
+                            }
                         } label: {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.blue)
@@ -35,14 +40,16 @@ struct AnalyticsView: View {
                         
                         Spacer()
                         
-                        Text(monthFormatter.string(from: selectedMonth).capitalized)
+                        Text(monthNameNominative)
                             .font(.title2)
                             .bold()
                         
                         Spacer()
                         
                         Button {
-                            selectedMonth = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) ?? selectedMonth
+                            if let newDate = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) {
+                                selectedMonth = newDate
+                            }
                         } label: {
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.blue)
@@ -87,7 +94,7 @@ struct AnalyticsView: View {
                     if !monthTransactions.isEmpty {
                         VStack(alignment: .leading, spacing: 12) {
                             ForEach(monthTransactions) { transaction in
-                                TransactionRow(transaction: transaction, expenseService: expenseService)
+                                TransactionRow(transaction: transaction, expenseViewModel: expenseViewModel)
                             }
                         }
                         .padding(.horizontal)
@@ -125,12 +132,14 @@ struct AnalyticsView: View {
             }
         }
         .sheet(isPresented: $showAddPurchase) {
-            AddPurchaseView(expenseService: expenseService, selectedMonth: $selectedMonth)
+            AddPurchaseView(expenseViewModel: expenseViewModel, selectedMonth: $selectedMonth)
         }
     }
 }
 
 #Preview {
-    AnalyticsView(selectedMonth: .constant(Date()), expenseService: ExpenseService())
+    let expenseService = ExpenseService()
+    let expenseViewModel = ExpenseViewModel(expenseService: expenseService)
+    return AnalyticsView(selectedMonth: .constant(Date()), expenseViewModel: expenseViewModel)
 }
 
