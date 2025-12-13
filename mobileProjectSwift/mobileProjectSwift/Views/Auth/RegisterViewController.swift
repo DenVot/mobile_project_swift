@@ -7,6 +7,7 @@ class RegisterViewController: UIViewController {
     private var passwordTextField: UITextField!
     private var confirmPasswordTextField: UITextField!
     private var registerButton: UIButton!
+    private var errorLabel: UILabel!
     
     private let authViewModel: AuthViewModel
     private var cancellables = Set<AnyCancellable>()
@@ -24,6 +25,22 @@ class RegisterViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupNavigationBar()
+        setupBindings()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        authViewModel.clearError()
+    }
+    
+    private func setupBindings() {
+        authViewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                self?.errorLabel.text = errorMessage
+                self?.errorLabel.isHidden = errorMessage == nil
+            }
+            .store(in: &cancellables)
     }
     
     private func setupNavigationBar() {
@@ -80,6 +97,15 @@ class RegisterViewController: UIViewController {
         confirmPasswordTextField.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(confirmPasswordTextField)
         
+        errorLabel = UILabel()
+        errorLabel.textColor = .systemRed
+        errorLabel.font = .systemFont(ofSize: 14)
+        errorLabel.textAlignment = .center
+        errorLabel.numberOfLines = 0
+        errorLabel.isHidden = true
+        errorLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(errorLabel)
+        
         registerButton = UIButton(type: .system)
         registerButton.setTitle("Зарегистрироваться", for: .normal)
         registerButton.setTitleColor(.white, for: .normal)
@@ -113,7 +139,11 @@ class RegisterViewController: UIViewController {
             confirmPasswordTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             confirmPasswordTextField.heightAnchor.constraint(equalToConstant: 44),
             
-            registerButton.topAnchor.constraint(equalTo: confirmPasswordTextField.bottomAnchor, constant: 20),
+            errorLabel.topAnchor.constraint(equalTo: confirmPasswordTextField.bottomAnchor, constant: 12),
+            errorLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            
+            registerButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 20),
             registerButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             registerButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             registerButton.heightAnchor.constraint(equalToConstant: 50),

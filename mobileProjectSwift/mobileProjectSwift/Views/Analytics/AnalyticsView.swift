@@ -4,6 +4,8 @@ struct AnalyticsView: View {
     @Binding var selectedMonth: Date
     @ObservedObject var expenseViewModel: ExpenseViewModel
     @State private var showAddPurchase = false
+    @State private var categoryExpenses: [(category: Category, amount: Double, percentage: Double)] = []
+    @State private var isLoadingAnalytics = false
     
     private var monthNameNominative: String {
         let monthNames = [
@@ -17,10 +19,6 @@ struct AnalyticsView: View {
     
     private var monthTransactions: [Transaction] {
         expenseViewModel.getTransactions(for: selectedMonth)
-    }
-    
-    private var categoryExpenses: [(category: Category, amount: Double, percentage: Double)] {
-        expenseViewModel.getCategoryExpenses(for: selectedMonth)
     }
     
     var body: some View {
@@ -133,6 +131,26 @@ struct AnalyticsView: View {
         }
         .sheet(isPresented: $showAddPurchase) {
             AddPurchaseView(expenseViewModel: expenseViewModel, selectedMonth: $selectedMonth)
+        }
+        .onAppear {
+            loadAnalytics()
+        }
+        .onChange(of: selectedMonth) { _ in
+            loadAnalytics()
+        }
+        .onChange(of: expenseViewModel.transactions) { _ in
+            loadAnalytics()
+        }
+    }
+    
+    private func loadAnalytics() {
+        isLoadingAnalytics = true
+        Task {
+            let expenses = await expenseViewModel.getCategoryExpenses(for: selectedMonth)
+            await MainActor.run {
+                categoryExpenses = expenses
+                isLoadingAnalytics = false
+            }
         }
     }
 }

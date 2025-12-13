@@ -19,7 +19,14 @@ struct CategoriesView: View {
                         Spacer()
                         
                         Button {
-                            expenseViewModel.deleteCategory(category)
+                            Task {
+                                await MainActor.run {
+                                    expenseViewModel.deleteCategory(category)
+                                }
+                                await MainActor.run {
+                                    expenseViewModel.loadData()
+                                }
+                            }
                         } label: {
                             Image(systemName: "minus.circle")
                                 .foregroundColor(.red)
@@ -50,6 +57,11 @@ struct CategoriesView: View {
         }
         .sheet(isPresented: $showAddCategory) {
             AddCategoryView(expenseViewModel: expenseViewModel)
+        }
+        .onAppear {
+            if expenseViewModel.categories.isEmpty {
+                expenseViewModel.loadData()
+            }
         }
     }
 }

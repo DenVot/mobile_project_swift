@@ -4,13 +4,8 @@ struct YearlyAnalyticsView: View {
     @ObservedObject var expenseViewModel: ExpenseViewModel
     @State private var selectedCategory: Category? = nil
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
-    
-    private var yearlyData: [(month: Int, amount: Double)] {
-        expenseViewModel.getYearlyData(
-            for: selectedYear,
-            categoryId: selectedCategory?.id
-        )
-    }
+    @State private var yearlyData: [(month: Int, amount: Double)] = []
+    @State private var isLoading = false
     
     private var maxAmount: Double {
         yearlyData.map { $0.amount }.max() ?? 1
@@ -133,6 +128,26 @@ struct YearlyAnalyticsView: View {
                     }
                 }
                 .padding(.horizontal)
+            }
+        }
+        .onAppear {
+            loadYearlyData()
+        }
+        .onChange(of: selectedYear) { _ in
+            loadYearlyData()
+        }
+        .onChange(of: selectedCategory) { _ in
+            loadYearlyData()
+        }
+    }
+    
+    private func loadYearlyData() {
+        isLoading = true
+        Task {
+            let data = await expenseViewModel.getYearlyData(for: selectedYear, categoryId: selectedCategory?.id)
+            await MainActor.run {
+                yearlyData = data
+                isLoading = false
             }
         }
     }
