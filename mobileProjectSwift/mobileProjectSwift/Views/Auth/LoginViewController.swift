@@ -7,6 +7,7 @@ class LoginViewController: UIViewController {
     private var loginButton: UIButton!
     private var registerButton: UIButton!
     private var titleLabel: UILabel!
+    private var errorLabel: UILabel!
     
     private let authViewModel: AuthViewModel
     private var cancellables = Set<AnyCancellable>()
@@ -23,6 +24,22 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupBindings()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        authViewModel.clearError()
+    }
+    
+    private func setupBindings() {
+        authViewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                self?.errorLabel.text = errorMessage
+                self?.errorLabel.isHidden = errorMessage == nil
+            }
+            .store(in: &cancellables)
     }
     
     private func setupUI() {
@@ -55,6 +72,15 @@ class LoginViewController: UIViewController {
         passwordTextField.autocorrectionType = .no
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(passwordTextField)
+        
+        errorLabel = UILabel()
+        errorLabel.textColor = .systemRed
+        errorLabel.font = .systemFont(ofSize: 14)
+        errorLabel.textAlignment = .center
+        errorLabel.numberOfLines = 0
+        errorLabel.isHidden = true
+        errorLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(errorLabel)
         
         loginButton = UIButton(type: .system)
         loginButton.setTitle("Войти", for: .normal)
@@ -91,7 +117,11 @@ class LoginViewController: UIViewController {
             passwordTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 44),
             
-            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
+            errorLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 12),
+            errorLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            
+            loginButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 20),
             loginButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             loginButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             loginButton.heightAnchor.constraint(equalToConstant: 50),

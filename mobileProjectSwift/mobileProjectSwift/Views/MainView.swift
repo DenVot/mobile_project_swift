@@ -61,6 +61,21 @@ struct MainView: View {
                 }
             }
         }
+        .onAppear {
+            if viewModel.authViewModel.isAuthenticated {
+                viewModel.expenseViewModel.loadData(month: viewModel.selectedMonth)
+            }
+        }
+        .onChange(of: viewModel.authViewModel.isAuthenticated) { isAuthenticated in
+            if isAuthenticated {
+                viewModel.expenseViewModel.loadData(month: viewModel.selectedMonth)
+            }
+        }
+        .onChange(of: viewModel.selectedMonth) { newMonth in
+            if viewModel.authViewModel.isAuthenticated {
+                viewModel.expenseViewModel.loadData(month: newMonth)
+            }
+        }
     }
 }
 
