@@ -4,22 +4,23 @@ class TokenManager {
     static let shared = TokenManager()
     
     private let tokenKey = "jwt_token"
+    private let keychainHelper = KeychainHelper.shared
     
     private init() {}
     
     func saveToken(_ token: String) {
-        UserDefaults.standard.set(token, forKey: tokenKey)
+        _ = keychainHelper.save(token, forKey: tokenKey)
     }
     
     func getToken() -> String? {
-        return UserDefaults.standard.string(forKey: tokenKey)
+        return keychainHelper.get(forKey: tokenKey)
     }
     
     func clearToken() {
-        UserDefaults.standard.removeObject(forKey: tokenKey)
+        _ = keychainHelper.delete(forKey: tokenKey)
     }
     
     var hasToken: Bool {
-        return getToken() != nil
+        return keychainHelper.hasValue(forKey: tokenKey)
     }
 }
